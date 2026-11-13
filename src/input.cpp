@@ -7,6 +7,8 @@ constexpr uint8_t buttonPins[BTN_COUNT] = {
     17, // BTN_DOWN
     19, // BTN_LEFT
     21, // BTN_RIGHT
+    32, // BTN_ACTION
+    33, // BTN_ADDITION
 };
 
 void initInput() {

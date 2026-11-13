@@ -6,6 +6,7 @@ enum Button {
   BTN_LEFT,
   BTN_RIGHT,
   BTN_ACTION,
+  BTN_ADDITION,
   BTN_COUNT // эта строчка по сути счетчик для циклов
 };
 

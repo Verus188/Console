@@ -1,5 +1,6 @@
 #pragma once
-
+#include "Timer.h"
+#include "types.h"
 class Player {
 public:
   Player();
@@ -11,4 +12,10 @@ public:
   int playerPositionY;
   int lastPlayerPositionX;
   int lastPlayerPositionY;
+  bool justShot = false;
+  Direction viewDirection;
+
+private:
+  Timer moveTimer;
+  Timer shootTimer;
 };
