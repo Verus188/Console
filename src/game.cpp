@@ -35,7 +35,7 @@ void updatePlayer() {
 void updateBullets() {
   if (myPlayer.justShot && activeBullets < MAX_BULLETS) {
     bullets[activeBullets] =
-        Bullet(myPlayer.playerPositionX, myPlayer.playerPositionY, 1,
+        Bullet(myPlayer.playerPositionX, myPlayer.playerPositionY, 1, 10,
                myPlayer.viewDirection);
     activeBullets++;
   }
