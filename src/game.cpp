@@ -6,15 +6,17 @@
 
 Player myPlayer;
 TFT_eSPI tft = TFT_eSPI();
+TFT_eSprite sprite = TFT_eSprite(&tft);
+
 const int MAX_BULLETS = 20;
 Bullet bullets[MAX_BULLETS];
 int activeBullets = 0;
 
 void drawWalls() {
-  tft.drawLine(0, 0, MAP_SIZE_X, 0, TFT_GREEN);
-  tft.drawLine(0, MAP_SIZE_Y, MAP_SIZE_X, MAP_SIZE_Y, TFT_GREEN);
-  tft.drawLine(0, MAP_SIZE_Y, 0, 0, TFT_GREEN);
-  tft.drawLine(MAP_SIZE_X, 0, MAP_SIZE_X, MAP_SIZE_Y, TFT_GREEN);
+  sprite.drawLine(0, 0, MAP_SIZE_X - 2, 0, TFT_GREEN);
+  sprite.drawLine(0, MAP_SIZE_Y - 2, MAP_SIZE_X - 2, MAP_SIZE_Y - 2, TFT_GREEN);
+  sprite.drawLine(0, MAP_SIZE_Y - 2, 0, 0, TFT_GREEN);
+  sprite.drawLine(MAP_SIZE_X - 2, 0, MAP_SIZE_X - 2, MAP_SIZE_Y - 2, TFT_GREEN);
 }
 
 bool isOutOfBounds(int x, int y) {
@@ -24,15 +26,14 @@ bool isOutOfBounds(int x, int y) {
   return false;
 }
 
-void updatePlayer() {
-  myPlayer.update();
-  tft.drawSpot(myPlayer.lastPlayerPositionX, myPlayer.lastPlayerPositionY, 1,
-               TFT_BLACK, TFT_BLACK);
-  tft.drawSpot(myPlayer.playerPositionX, myPlayer.playerPositionY, 1, TFT_GREEN,
-               TFT_GREEN);
+void drawPlayer() {
+  sprite.drawSpot(myPlayer.playerPositionX, myPlayer.playerPositionY, 1,
+                  TFT_GREEN, TFT_GREEN);
 }
 
 void updateBullets() {
+
+  // если игрок выстрелил, то добавляем пулю, если еще есть место в массиве пуль
   if (myPlayer.justShot && activeBullets < MAX_BULLETS) {
     bullets[activeBullets] =
         Bullet(myPlayer.playerPositionX, myPlayer.playerPositionY, 1, 10,
@@ -40,16 +41,20 @@ void updateBullets() {
     activeBullets++;
   }
 
+  // обновляем пули, удаляем те, что за экраном
   for (int i = 0; i < activeBullets; i++) {
-    tft.drawSpot(bullets[i].x, bullets[i].y, 1, TFT_BLACK, TFT_BLACK);
     bullets[i].update();
 
-    if (!isOutOfBounds(bullets[i].x, bullets[i].y)) {
-      tft.drawSpot(bullets[i].x, bullets[i].y, 1, TFT_YELLOW, TFT_YELLOW);
-    } else {
+    if (isOutOfBounds(bullets[i].x, bullets[i].y)) {
       bullets[i] = bullets[activeBullets - 1];
       activeBullets--;
     }
+  }
+}
+
+void drawBullets() {
+  for (int i = 0; i < activeBullets; i++) {
+    sprite.drawSpot(bullets[i].x, bullets[i].y, 1, TFT_YELLOW, TFT_YELLOW);
   }
 }
 
@@ -57,12 +62,26 @@ void initGame() {
   tft.init();
   tft.setRotation(3);
   tft.fillScreen(TFT_BLACK);
+
+  if (!sprite.createSprite(MAP_SIZE_X, MAP_SIZE_Y)) {
+    Serial.println("Failed to create sprite");
+  }
+
+  sprite.fillScreen(TFT_BLACK);
   drawWalls();
-  updatePlayer();
+  drawPlayer();
   myPlayer = Player();
 }
 
 void updateGame() {
-  updatePlayer();
+  myPlayer.update();
   updateBullets();
+
+  sprite.fillScreen(TFT_BLACK);
+
+  drawWalls();
+  drawPlayer();
+  drawBullets();
+
+  sprite.pushSprite(MAP_OFFSET_X, MAP_OFFSET_Y);
 }
