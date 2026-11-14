@@ -4,7 +4,7 @@
 #include <input.h>
 
 Player::Player()
-    : Entity(50, 50, 3, 50, Direction::RIGHT), moveTimer(50), shootTimer(200) {
+    : Entity(50, 50, 1, 20), direction(Direction::RIGHT), shootTimer(200) {
   lastPlayerPositionX = x;
   lastPlayerPositionY = y;
   justShot = false;

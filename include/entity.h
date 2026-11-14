@@ -1,23 +1,21 @@
 #pragma once
 #include "timer.h"
-#include "types.h"
 
 class Entity {
 public:
-  Entity() : isActive(false), moveTimer(1000) {}
-  Entity(int startX, int startY, int stepPixels, int intervalMs,
-         Direction bulletDirection)
+  Entity() : x(0), y(0), speed(0), isActive(false), moveTimer(1000) {}
+  Entity(int startX, int startY, int stepPixels, int intervalMs)
       : x(startX), y(startY), speed(stepPixels), isActive(true),
-        direction(bulletDirection), moveTimer(intervalMs) {}
+        moveTimer(intervalMs) {}
 
   int x;
   int y;
-  int speed; // сколько пролетает за шаг
+  int speed;
   bool isActive;
-  Direction direction;
 
-  void update();
+  virtual ~Entity() = default;
+  virtual void update();
 
-private:
+protected:
   Timer moveTimer;
 };

@@ -6,7 +6,7 @@ private:
   unsigned long interval;
 
 public:
-  Timer(unsigned long ms);
+  explicit Timer(unsigned long ms);
   bool ready();
   void reset();
 };

@@ -1,6 +1,7 @@
 #include "game.h"
 #include "input.h"
 #include <Arduino.h>
+#include <random.h>
 
 // Переменные для статистики
 unsigned long lastPrintTime = 0;
@@ -45,6 +46,7 @@ void setup() {
   delay(1000);
   Serial.println("Starting Game...");
 
+  Random::init();
   initInput();
   initGame();
 }
