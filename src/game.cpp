@@ -2,14 +2,14 @@
 #include "gameConfig.h"
 #include "player.h"
 #include <TFT_eSPI.h>
-#include <bullet.h>
+#include <entity.h>
 
 Player myPlayer;
 TFT_eSPI tft = TFT_eSPI();
 TFT_eSprite sprite = TFT_eSprite(&tft);
 
 const int MAX_BULLETS = 20;
-Bullet bullets[MAX_BULLETS];
+Entity bullets[MAX_BULLETS];
 int activeBullets = 0;
 
 void drawWalls() {
@@ -27,16 +27,14 @@ bool isOutOfBounds(int x, int y) {
 }
 
 void drawPlayer() {
-  sprite.drawSpot(myPlayer.playerPositionX, myPlayer.playerPositionY, 1,
-                  TFT_GREEN, TFT_GREEN);
+  sprite.drawSpot(myPlayer.x, myPlayer.y, 1, TFT_GREEN, TFT_GREEN);
 }
 
 void updateBullets() {
   // если игрок выстрелил, то добавляем пулю, если еще есть место в массиве пуль
   if (myPlayer.justShot && activeBullets < MAX_BULLETS) {
     bullets[activeBullets] =
-        Bullet(myPlayer.playerPositionX, myPlayer.playerPositionY, 3, 20,
-               myPlayer.viewDirection);
+        Entity(myPlayer.x, myPlayer.y, 3, 20, myPlayer.direction);
     activeBullets++;
   }
 

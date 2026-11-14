@@ -1,19 +1,16 @@
 #pragma once
-#include "Timer.h"
+#include "entity.h"
+#include "timer.h"
 #include "types.h"
-class Player {
+class Player : public Entity {
 public:
   Player();
   void update();
   void calculatePlayerPosition(int offsetX, int offsetY);
 
-  int speed;
-  int playerPositionX;
-  int playerPositionY;
   int lastPlayerPositionX;
   int lastPlayerPositionY;
   bool justShot = false;
-  Direction viewDirection;
 
 private:
   Timer moveTimer;

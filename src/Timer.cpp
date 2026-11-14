@@ -1,4 +1,4 @@
-#include "Timer.h"
+#include "timer.h"
 #include <Arduino.h>
 
 Timer::Timer(unsigned long ms) : interval(ms), previousMillis(0) {}

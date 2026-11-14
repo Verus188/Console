@@ -3,36 +3,33 @@
 #include <Arduino.h>
 #include <input.h>
 
-Player::Player() : moveTimer(50), shootTimer(200) {
-  speed = 3;
-  playerPositionX = 50;
-  playerPositionY = 50;
-  lastPlayerPositionX = 50;
-  lastPlayerPositionY = 50;
-  viewDirection = Direction::RIGHT;
+Player::Player()
+    : Entity(50, 50, 3, 50, Direction::RIGHT), moveTimer(50), shootTimer(200) {
+  lastPlayerPositionX = x;
+  lastPlayerPositionY = y;
   justShot = false;
 }
 
 void Player::calculatePlayerPosition(int offsetX, int offsetY) {
-  lastPlayerPositionX = playerPositionX;
-  lastPlayerPositionY = playerPositionY;
-  playerPositionX += offsetX;
-  playerPositionY += offsetY;
+  lastPlayerPositionX = x;
+  lastPlayerPositionY = y;
+  x += offsetX;
+  y += offsetY;
 
   constexpr uint8_t playerSizeOffset =
       2; // чтоб не вылезал за границы карты с учетом своего размера
 
-  if (playerPositionX < playerSizeOffset) {
-    playerPositionX = playerSizeOffset;
+  if (x < playerSizeOffset) {
+    x = playerSizeOffset;
   }
-  if (playerPositionY < playerSizeOffset) {
-    playerPositionY = playerSizeOffset;
+  if (y < playerSizeOffset) {
+    y = playerSizeOffset;
   }
-  if (playerPositionX > MAP_SIZE_X - playerSizeOffset) {
-    playerPositionX = MAP_SIZE_X - playerSizeOffset;
+  if (x > MAP_SIZE_X - playerSizeOffset) {
+    x = MAP_SIZE_X - playerSizeOffset;
   }
-  if (playerPositionY > MAP_SIZE_Y - playerSizeOffset) {
-    playerPositionY = MAP_SIZE_Y - playerSizeOffset;
+  if (y > MAP_SIZE_Y - playerSizeOffset) {
+    y = MAP_SIZE_Y - playerSizeOffset;
   }
 }
 
@@ -42,19 +39,19 @@ void Player::update() {
   justShot = false;
 
   if (isButtonPressed(BTN_UP)) {
-    viewDirection = Direction::UP;
+    direction = Direction::UP;
     moveY -= speed;
   }
   if (isButtonPressed(BTN_DOWN)) {
-    viewDirection = Direction::DOWN;
+    direction = Direction::DOWN;
     moveY += speed;
   }
   if (isButtonPressed(BTN_LEFT)) {
-    viewDirection = Direction::LEFT;
+    direction = Direction::LEFT;
     moveX -= speed;
   }
   if (isButtonPressed(BTN_RIGHT)) {
-    viewDirection = Direction::RIGHT;
+    direction = Direction::RIGHT;
     moveX += speed;
   }
 

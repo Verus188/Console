@@ -1,21 +1,21 @@
-#include <bullet.h>
+#include <entity.h>
 
-void Bullet::update() {
+void Entity::update() {
   if (!moveTimer.ready())
     return;
 
   switch (direction) {
   case Direction::UP:
-    y -= stepPixels;
+    y -= speed;
     break;
   case Direction::DOWN:
-    y += stepPixels;
+    y += speed;
     break;
   case Direction::LEFT:
-    x -= stepPixels;
+    x -= speed;
     break;
   case Direction::RIGHT:
-    x += stepPixels;
+    x += speed;
     break;
   }
 }
