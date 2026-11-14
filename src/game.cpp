@@ -32,11 +32,10 @@ void drawPlayer() {
 }
 
 void updateBullets() {
-
   // если игрок выстрелил, то добавляем пулю, если еще есть место в массиве пуль
   if (myPlayer.justShot && activeBullets < MAX_BULLETS) {
     bullets[activeBullets] =
-        Bullet(myPlayer.playerPositionX, myPlayer.playerPositionY, 1, 10,
+        Bullet(myPlayer.playerPositionX, myPlayer.playerPositionY, 3, 20,
                myPlayer.viewDirection);
     activeBullets++;
   }
